@@ -29,9 +29,12 @@ struct PopoverView: View {
                         EmptyStateView()
                     } else {
                         ForEach(visible) { session in
-                            SessionCardView(session: session) {
+                            SessionCardView(session: session, onHide: {
                                 viewModel.hideSession(session.sessionId)
-                            }
+                            }, onActivate: {
+                                print("[Dashboard] Tap on session: \(session.projectName)")
+                                TerminalActivator.activateSession(session)
+                            })
                         }
                     }
                 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct SessionCardView: View {
     let session: Session
     let onHide: () -> Void
+    let onActivate: () -> Void
 
     private var statusColor: Color {
         switch session.status {
@@ -22,61 +23,70 @@ struct SessionCardView: View {
         }
     }
 
+    @State private var isHovered = false
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Image(systemName: statusIcon)
-                    .foregroundColor(statusColor)
-                    .font(.system(size: 10))
-
-                Text(session.projectName)
-                    .font(.system(size: 13, weight: .semibold))
-                    .lineLimit(1)
-
-                Spacer()
-
-                Button(action: onHide) {
-                    Image(systemName: "eye.slash")
+        Button(action: onActivate) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Image(systemName: statusIcon)
+                        .foregroundColor(statusColor)
                         .font(.system(size: 10))
-                        .foregroundColor(.secondary)
-                }
-                .buttonStyle(.plain)
-                .help("Hide session")
-            }
 
-            if let detail = session.statusDetail {
-                Text(detail)
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
+                    Text(session.projectName)
+                        .font(.system(size: 13, weight: .semibold))
+                        .lineLimit(1)
 
-            HStack(spacing: 12) {
-                if let tokenUsage = session.tokenUsage {
-                    Label(TokenFormatter.format(tokenUsage.total) + " tokens",
-                          systemImage: "number.circle")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary)
+                    Spacer()
+
+                    Button(action: onHide) {
+                        Image(systemName: "eye.slash")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Hide session")
                 }
 
-                if let started = session.startedAt {
-                    Label(TimeFormatter.duration(from: started),
-                          systemImage: "clock")
-                        .font(.system(size: 10))
+                if let detail = session.statusDetail {
+                    Text(detail)
+                        .font(.system(size: 11))
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
 
-                Spacer()
+                HStack(spacing: 12) {
+                    if let tokenUsage = session.tokenUsage {
+                        Label(TokenFormatter.format(tokenUsage.total) + " tokens",
+                              systemImage: "number.circle")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
 
-                Text(TimeFormatter.relativeTime(from: session.updatedAt))
-                    .font(.system(size: 10))
-                    .foregroundStyle(.tertiary)
+                    if let started = session.startedAt {
+                        Label(TimeFormatter.duration(from: started),
+                              systemImage: "clock")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+
+                    Text(TimeFormatter.relativeTime(from: session.updatedAt))
+                        .font(.system(size: 10))
+                        .foregroundStyle(.tertiary)
+                }
             }
+            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .contentShape(Rectangle())
         }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 8)
-        .background(Color(nsColor: .controlBackgroundColor).opacity(0.5))
+        .buttonStyle(.plain)
+        .background(isHovered
+            ? Color(nsColor: .controlBackgroundColor).opacity(0.8)
+            : Color(nsColor: .controlBackgroundColor).opacity(0.5))
         .cornerRadius(6)
+        .onHover { isHovered = $0 }
         .help(session.cwd)
     }
 }
