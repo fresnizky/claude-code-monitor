@@ -4,6 +4,7 @@ enum SessionStatus: String, Codable {
     case working
     case waitingInput = "waiting_input"
     case idle
+    case ended
     case error
 }
 
@@ -35,7 +36,11 @@ struct Session: Codable, Identifiable, Equatable {
     }
 
     var isStale: Bool {
-        Date().timeIntervalSince(updatedAt) > 24 * 60 * 60
+        let elapsed = Date().timeIntervalSince(updatedAt)
+        if status == .ended {
+            return elapsed > 5 * 60  // 5 min for ended sessions
+        }
+        return elapsed > 24 * 60 * 60
     }
 
     enum CodingKeys: String, CodingKey {

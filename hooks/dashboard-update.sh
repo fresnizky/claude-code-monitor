@@ -57,6 +57,9 @@ elif hook_event == "Notification":
 elif hook_event == "Stop":
     status = "idle"
     status_detail = "Idle"
+elif hook_event == "SessionEnd":
+    status = "ended"
+    status_detail = "Session ended"
 else:
     status = "working"
     status_detail = hook_event

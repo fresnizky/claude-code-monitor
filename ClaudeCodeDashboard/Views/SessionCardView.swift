@@ -10,6 +10,7 @@ struct SessionCardView: View {
         case .working: return .blue
         case .waitingInput: return .orange
         case .idle: return .gray
+        case .ended: return .gray.opacity(0.5)
         case .error: return .red
         }
     }
@@ -19,6 +20,7 @@ struct SessionCardView: View {
         case .working: return "circle.fill"
         case .waitingInput: return "exclamationmark.circle.fill"
         case .idle: return "circle"
+        case .ended: return "xmark.circle"
         case .error: return "xmark.circle.fill"
         }
     }
