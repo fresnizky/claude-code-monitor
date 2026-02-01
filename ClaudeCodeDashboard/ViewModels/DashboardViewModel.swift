@@ -53,6 +53,11 @@ final class DashboardViewModel: ObservableObject {
         service.writeState(state)
     }
 
+    func clearAll() {
+        state = DashboardState()
+        service.writeState(state)
+    }
+
     private func loadState() {
         if let loaded = service.readState() {
             state = cleanStale(loaded)

@@ -10,10 +10,18 @@ struct PopoverView: View {
                 Text("Claude Code")
                     .font(.system(size: 13, weight: .semibold))
                 Spacer()
-                if !viewModel.state.visibleSessions.isEmpty {
+                if !viewModel.state.sessions.isEmpty {
                     Text("\(viewModel.state.visibleSessions.count) session\(viewModel.state.visibleSessions.count == 1 ? "" : "s")")
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
+
+                    Button(action: { viewModel.clearAll() }) {
+                        Image(systemName: "trash")
+                            .font(.system(size: 11))
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Clear all sessions")
                 }
             }
             .padding(.horizontal, 12)
