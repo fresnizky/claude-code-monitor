@@ -56,7 +56,7 @@ elif hook_event == "Notification":
     status_detail = "Waiting for input"
 elif hook_event == "Stop":
     status = "idle"
-    status_detail = "Session ended"
+    status_detail = "Idle"
 else:
     status = "working"
     status_detail = hook_event
