@@ -8,13 +8,7 @@ struct ClaudeCodeDashboardApp: App {
         MenuBarExtra {
             PopoverView(viewModel: viewModel)
         } label: {
-            let icon = viewModel.menuBarIcon
-            let count = viewModel.needsAttentionCount
-            if count > 0 {
-                Label("\(count)", systemImage: icon)
-            } else {
-                Image(systemName: icon)
-            }
+            Image(systemName: viewModel.menuBarIcon)
         }
         .menuBarExtraStyle(.window)
     }

@@ -22,10 +22,6 @@ final class DashboardViewModel: ObservableObject {
         return "circle"
     }
 
-    var needsAttentionCount: Int {
-        state.visibleSessions.filter { !$0.isStale && $0.status == .waitingInput }.count
-    }
-
     init() {
         loadState()
         startPolling()
